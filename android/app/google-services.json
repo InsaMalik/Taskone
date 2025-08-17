@@ -12,7 +12,12 @@
           "package_name": "com.example.google_signin"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "224079958717-ql4u4ji1vg9kbdcbc2sbb93pbjc2nujt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD5VOGnNx1z8kpFsC3TMR4o1CxOukAlZts"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224079958717-ql4u4ji1vg9kbdcbc2sbb93pbjc2nujt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "224079958717-l17j5em7gdn5ls8869d6e99o3q6b9ng5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.googleSignin"
+              }
+            }
+          ]
         }
       }
     }

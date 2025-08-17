@@ -1,8 +1,9 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-
+ 
 class LoginSrceen extends StatelessWidget {
   const LoginSrceen({super.key});
 
@@ -77,7 +78,37 @@ class LoginSrceen extends StatelessWidget {
            const SizedBox(height: 20,),
            SignInButton(
             Buttons.Google,
-            onPressed:(){}
+            onPressed:() async {
+              try{
+                UserCredential userCredential = await  signInWithGoogle();
+                if(userCredential !=null){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                      content: Text("welcome,${userCredential.user?.displayName??"user"}"),
+                      backgroundColor: Colors.green,
+
+                    ),
+                  );
+                  Navigator.pushReplacementNamed(context, "/home");
+                }
+                else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("lohin Failed. Please try again"),
+                      backgroundColor: Colors.red,
+                    )
+                    );
+                }
+               
+              } catch(e){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                      content:Text("Google Sign-In Failed:$e"),
+                      backgroundColor: Colors.red,
+                    ),
+                    );
+                }
+            },
            ),
            SizedBox(height: 30,),
            Row(
@@ -100,4 +131,6 @@ class LoginSrceen extends StatelessWidget {
       );
     
   }
+  
+  signInWithGoogle() {}
 }
