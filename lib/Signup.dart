@@ -61,6 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ), 
             child: const Text("Sign Up"),),
+            const SizedBox(height: 19,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
