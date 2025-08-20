@@ -2,28 +2,27 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_signin/HomeSceen.dart';
-import 'package:google_signin/LoginSrceen.dart';
+import 'package:google_signin/providers/auth_provider.dart';
+import 'package:google_signin/screen/HomeSceen.dart';
+import 'package:google_signin/screen/LoginSrceen.dart';
+import 'package:provider/provider.dart';
 
-class _WrapperScreen extends StatefulWidget {
+class _WrapperScreen extends StatelessWidget {
   const _WrapperScreen ({super.key});
 
   @override
-  State<_WrapperScreen > createState() => __WrapperScreenState();
-}
-
-class __WrapperScreenState extends State<_WrapperScreen > {
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-     builder: (context,snapshot){
-      if(snapshot.hasData){
+    final authProvider= Provider.of<AuthProvider>(context);
+   
+      if(authProvider.user !=null){
         return HomeScreen();
       }
       else{
         return LoginSrceen();
-      }
-     });
+    }
+   }
   }
-}
+  
+  extension on AuthProvider {
+  get user => null;
+  }

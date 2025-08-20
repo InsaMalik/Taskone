@@ -1,10 +1,12 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_signin/HomeSceen.dart';
-import 'package:google_signin/LoginSrceen.dart';
-import 'package:google_signin/PostPage.dart';
-import 'package:google_signin/Signup.dart';
+import 'package:google_signin/AuthProivder.dart';
+import 'package:google_signin/screen/HomeSceen.dart';
+import 'package:google_signin/screen/LoginSrceen.dart';
+import 'package:google_signin/screen/PostPage.dart';
+import 'package:google_signin/screen/Signup.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +19,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(providers: [
+     ChangeNotifierProvider(create: (_)=> AuthProvider()),
+    ],
+    child:MaterialApp(
       title: 'TaskOne App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: false),
@@ -29,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/signup': (_) => const SignUpScreen(),
         '/posts':(_)=>  PostsPage(),
       },
+    ),
     );
   }
 }

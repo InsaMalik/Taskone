@@ -4,12 +4,20 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:provider/provider.dart';
+import 'package:google_signin/providers/auth_provider.dart';
+
+
+
  
 class LoginSrceen extends StatelessWidget {
   const LoginSrceen({super.key});
 
   @override
   Widget build(BuildContext context) {
+   final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final TextEditingController emailController=TextEditingController();
+    final TextEditingController passwordController=TextEditingController();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -25,7 +33,8 @@ class LoginSrceen extends StatelessWidget {
 
               ),
               const SizedBox(height: 30,),
-              const TextField(
+               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined),
                   labelText:"Email",
@@ -35,7 +44,8 @@ class LoginSrceen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20,),
-              const TextField(
+               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outlined),
@@ -54,8 +64,24 @@ class LoginSrceen extends StatelessWidget {
            ),
            const SizedBox(height: 10,),
            ElevatedButton(
-            onPressed: (){
-              Navigator.pushNamed(context, "/home");
+            onPressed: ()async{
+              try {
+              await authProvider.signInWithEmailandPassword(
+              emailController.text.trim(),
+              passwordController.text.trim(),
+              );
+
+                Navigator.pushNamed(context, "/home");
+              }
+               
+              catch(e){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Login Failed.$e"),
+                    backgroundColor: Colors.red, )
+                );
+              }
+             
             }, 
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -81,11 +107,12 @@ class LoginSrceen extends StatelessWidget {
             Buttons.Google,
             onPressed:() async {
               try{
-                UserCredential userCredential = await  signInWithGoogle();
-                if(userCredential !=null){
+                await authProvider.signInWithGoogle(); 
+                final user=authProvider.user;
+                if(user !=null){
                   ScaffoldMessenger.of(context).showSnackBar(
                      SnackBar(
-                      content: Text("welcome,${userCredential.user?.displayName??"user"}"),
+                      content: Text("welcome,${user.user?.displayName??"user"}"),
                       backgroundColor: Colors.green,
 
                     ),
@@ -132,20 +159,23 @@ class LoginSrceen extends StatelessWidget {
       );
     
   }
+}
 
   
-Future<UserCredential>signInWithGoogle() async{
-  final GoogleSignInAccount? googleUser =await GoogleSignIn().signIn();
-  if(googleUser==null){
-    throw Exception("Google Sign-In failed");
-  }
-  final GoogleSignInAuthentication googleAuth =await googleUser.authentication;
-  final OAuthCredential credential=GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken:googleAuth.idToken,
-  );
-  return await FirebaseAuth.instance.signInWithCredential(credential);
-}
-}
+// Future<UserCredential>signInWithGoogle() async{
+//   final GoogleSignInAccount? googleUser =await GoogleSignIn().signIn();
+//   if(googleUser==null){
+//     throw Exception("Google Sign-In failed");
+//   }
+//   final GoogleSignInAuthentication googleAuth =await googleUser.authentication;
+//   final OAuthCredential credential=GoogleAuthProvider.credential(
+//     accessToken: googleAuth.accessToken,
+//     idToken:googleAuth.idToken,
+//   );
+//   return await FirebaseAuth.instance.signInWithCredential(credential);
+// }
+// }
 
-
+// extension on AuthProvider {
+//   signInWithEmailandPassword(String trim, String trim2) {}
+// }

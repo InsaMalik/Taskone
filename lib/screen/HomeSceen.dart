@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_signin/PostPage.dart';
+import 'package:google_signin/screen/PostPage.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
